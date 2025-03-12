@@ -75,6 +75,7 @@
             Controls.Add(label1);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Name = "FrmYeniSinif";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "FrmYeniSinif";
             ResumeLayout(false);
             PerformLayout();

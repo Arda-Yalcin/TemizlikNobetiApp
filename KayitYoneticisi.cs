@@ -15,6 +15,7 @@ namespace TemizlikNobetiApp
     {
         public static BindingList<Sinif> Siniflar { get; set; }
         public static BindingList<Ogrenci> Ogrenciler { get; set; }
+        public static BindingList<TemizlikKayit> TemizlikKayitlari { get; set; }
 
         public static void Kaydet()
         {
@@ -26,6 +27,10 @@ namespace TemizlikNobetiApp
             string metin2 = JsonSerializer.Serialize(Ogrenciler);
 
             File.WriteAllText("ogrenciler.txt", metin2);
+
+            string metin3 = JsonSerializer.Serialize(TemizlikKayitlari);
+
+            File.WriteAllText("temizlik.txt", metin3);
         }
         public static void Yukle()
         {
@@ -55,6 +60,26 @@ namespace TemizlikNobetiApp
             {
                 //Boş liste olarak oluştur
                 Ogrenciler = new BindingList<Ogrenci>();
+            }
+            ///**********
+            //Yükleme işlemleri
+            if (File.Exists("temizlik.txt"))
+            {
+                string metin = File.ReadAllText("temizlik.txt");
+
+                if (!string.IsNullOrEmpty(metin))
+                {
+
+                    var liste = JsonSerializer.Deserialize<List<TemizlikKayit>>(metin);
+
+                    TemizlikKayitlari = new BindingList<TemizlikKayit>(liste);
+                }
+                else TemizlikKayitlari = new BindingList<TemizlikKayit>();
+            }
+            else
+            {
+                //Boş liste olarak oluştur
+                TemizlikKayitlari = new BindingList<TemizlikKayit>();
             }
         }
     }

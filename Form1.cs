@@ -1,12 +1,15 @@
+using System.ComponentModel;
+
 namespace TemizlikNobetiApp
 {
     public partial class Form1 : Form
     {
+        BindingList<Ogrenci> SeciliOgrenciListesi = new();
         public Form1()
         {
             InitializeComponent();
 
-            //?lk aç?l??ta verileri yükle 
+            //ilk açýlýþta verileri yükle 
             KayitYoneticisi.Yukle();
 
             cbSinif.DisplayMember = "Ad";
@@ -17,9 +20,23 @@ namespace TemizlikNobetiApp
             lbOgrenciler.ValueMember = "Id";
             lbOgrenciler.DataSource = KayitYoneticisi.Ogrenciler;
 
+            lbSecilenler.DisplayMember = "AdSoyad";
+            lbSecilenler.ValueMember = "Id";
+            lbSecilenler.DataSource = SeciliOgrenciListesi;
+
             Filtrele();
         }
 
+        private void btnYeniSinif_Click(object sender, EventArgs e)
+        {
+            FrmYeniSinif form = new();
+            var cevap = form.ShowDialog();
+
+            if (cevap == DialogResult.OK)
+            {
+                MessageBox.Show("Yeni Sýnýf kayýt edildi.");
+            }
+        }
 
         private void btnYeniOgrenci_Click(object sender, EventArgs e)
         {
@@ -31,26 +48,17 @@ namespace TemizlikNobetiApp
                 Filtrele();
             }
         }
-        private void btnYeniSinif_Click(object sender, EventArgs e)
-        {
-            FrmYeniSinif form = new();
-            var cevap = form.ShowDialog();
 
-            if (cevap == DialogResult.OK)
-            {
-                MessageBox.Show("Yeni Sýnýf kayýt edildi.");
-            }
-        }
         private void Filtrele()
         {
             if (cbSinif.SelectedValue == null)
             {
-                //Sýnýf seçili de?ilse
+                //S?n?f seçili de?ilse
                 lbOgrenciler.DataSource = null;
                 return;
             }
 
-            //Sýnýf seçili
+            //S?n?f seçili
             string sinifId = cbSinif.SelectedValue.ToString();
 
             //LINQ ile sorgulama
@@ -62,9 +70,42 @@ namespace TemizlikNobetiApp
             lbOgrenciler.ValueMember = "Id";
             lbOgrenciler.DataSource = liste;
         }
-        private void cbSinif_SelectedValueChanged_1(object sender, EventArgs e)
+
+        private void cbSinif_SelectedValueChanged(object sender, EventArgs e)
         {
             Filtrele();
+        }
+
+        private void btnAta_Click(object sender, EventArgs e)
+        {
+            //Seçili olan? ö?renci gibi al (as=gibi)
+            //Alamazsan null de?er ver
+            Ogrenci ogr = lbOgrenciler.SelectedItem as Ogrenci;
+
+            if (ogr != null)
+            {
+
+                if (SeciliOgrenciListesi.Contains(ogr))
+                {
+                    MessageBox.Show("Öðrenci zaten seçili");
+                    return;
+                }
+
+                SeciliOgrenciListesi.Add(ogr);
+            }
+
+        }
+
+        private void btnCikar_Click(object sender, EventArgs e)
+        {
+            //Seçili olaný öðrenci gibi al (as=gibi)
+            //Alamazsan null deðer ver
+            Ogrenci ogr = lbSecilenler.SelectedItem as Ogrenci;
+
+            if (ogr != null)
+            {
+                SeciliOgrenciListesi.Remove(ogr);
+            }
         }
     }
 }

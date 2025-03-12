@@ -38,7 +38,7 @@
             btnYeniOgrenci = new Button();
             panel3 = new Panel();
             btnOnayla = new Button();
-            lbTemizlikYapacakOgrenciler = new ListBox();
+            lbSecilenler = new ListBox();
             label2 = new Label();
             btnCikar = new Button();
             btnAta = new Button();
@@ -100,7 +100,7 @@
             cbSinif.Name = "cbSinif";
             cbSinif.Size = new Size(142, 23);
             cbSinif.TabIndex = 0;
-            cbSinif.SelectedValueChanged += cbSinif_SelectedValueChanged_1;
+            cbSinif.SelectedValueChanged += cbSinif_SelectedValueChanged;
             // 
             // panel2
             // 
@@ -142,7 +142,7 @@
             // 
             panel3.BackColor = Color.LightSteelBlue;
             panel3.Controls.Add(btnOnayla);
-            panel3.Controls.Add(lbTemizlikYapacakOgrenciler);
+            panel3.Controls.Add(lbSecilenler);
             panel3.Controls.Add(label2);
             panel3.Location = new Point(22, 79);
             panel3.Name = "panel3";
@@ -161,15 +161,15 @@
             btnOnayla.Text = "Onayla";
             btnOnayla.UseVisualStyleBackColor = false;
             // 
-            // lbTemizlikYapacakOgrenciler
+            // lbSecilenler
             // 
-            lbTemizlikYapacakOgrenciler.BackColor = Color.LightSteelBlue;
-            lbTemizlikYapacakOgrenciler.FormattingEnabled = true;
-            lbTemizlikYapacakOgrenciler.ItemHeight = 15;
-            lbTemizlikYapacakOgrenciler.Location = new Point(21, 66);
-            lbTemizlikYapacakOgrenciler.Name = "lbTemizlikYapacakOgrenciler";
-            lbTemizlikYapacakOgrenciler.Size = new Size(321, 169);
-            lbTemizlikYapacakOgrenciler.TabIndex = 1;
+            lbSecilenler.BackColor = Color.LightSteelBlue;
+            lbSecilenler.FormattingEnabled = true;
+            lbSecilenler.ItemHeight = 15;
+            lbSecilenler.Location = new Point(21, 66);
+            lbSecilenler.Name = "lbSecilenler";
+            lbSecilenler.Size = new Size(321, 169);
+            lbSecilenler.TabIndex = 1;
             // 
             // label2
             // 
@@ -193,6 +193,7 @@
             btnCikar.TabIndex = 1;
             btnCikar.Text = "Çıkar";
             btnCikar.UseVisualStyleBackColor = false;
+            btnCikar.Click += btnCikar_Click;
             // 
             // btnAta
             // 
@@ -205,6 +206,7 @@
             btnAta.TabIndex = 0;
             btnAta.Text = "Ata";
             btnAta.UseVisualStyleBackColor = false;
+            btnAta.Click += btnAta_Click;
             // 
             // Form1
             // 
@@ -238,7 +240,7 @@
         private Button btnCikar;
         private Button btnAta;
         private Label label2;
-        private ListBox lbTemizlikYapacakOgrenciler;
+        private ListBox lbSecilenler;
         private Button btnYeniOgrenci;
         private Button btnOnayla;
         private Label label3;
