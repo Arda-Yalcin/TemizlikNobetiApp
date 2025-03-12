@@ -6,13 +6,32 @@ namespace TemizlikNobetiApp
         {
             InitializeComponent();
 
-            //Ýlk açýlýþta verileri yükle 
+            //?lk aç?l??ta verileri yükle 
             KayitYoneticisi.Yukle();
 
             cbSinif.DisplayMember = "Ad";
+            cbSinif.ValueMember = "Id";
             cbSinif.DataSource = KayitYoneticisi.Siniflar;
+
+            lbOgrenciler.DisplayMember = "AdSoyad";
+            lbOgrenciler.ValueMember = "Id";
+            lbOgrenciler.DataSource = KayitYoneticisi.Ogrenciler;
+
+            Filtrele();
         }
-        private void btnYeniSinif_Click_1(object sender, EventArgs e)
+
+
+        private void btnYeniOgrenci_Click(object sender, EventArgs e)
+        {
+            FrmYeniOgrenci form = new();
+            var cevap = form.ShowDialog();
+
+            if (cevap == DialogResult.OK)
+            {
+                Filtrele();
+            }
+        }
+        private void btnYeniSinif_Click(object sender, EventArgs e)
         {
             FrmYeniSinif form = new();
             var cevap = form.ShowDialog();
@@ -22,10 +41,30 @@ namespace TemizlikNobetiApp
                 MessageBox.Show("Yeni Sýnýf kayýt edildi.");
             }
         }
-        private void btnYeniOgrenci_Click(object sender, EventArgs e)
+        private void Filtrele()
         {
-            FrmYeniOgrenci form = new();
-            var cevap = form.ShowDialog();
+            if (cbSinif.SelectedValue == null)
+            {
+                //Sýnýf seçili de?ilse
+                lbOgrenciler.DataSource = null;
+                return;
+            }
+
+            //Sýnýf seçili
+            string sinifId = cbSinif.SelectedValue.ToString();
+
+            //LINQ ile sorgulama
+            //Lambda x => x.....
+            var liste = KayitYoneticisi.
+                Ogrenciler.Where(x => x.SinifId == sinifId).ToList();
+
+            lbOgrenciler.DisplayMember = "AdSoyad";
+            lbOgrenciler.ValueMember = "Id";
+            lbOgrenciler.DataSource = liste;
+        }
+        private void cbSinif_SelectedValueChanged_1(object sender, EventArgs e)
+        {
+            Filtrele();
         }
     }
 }

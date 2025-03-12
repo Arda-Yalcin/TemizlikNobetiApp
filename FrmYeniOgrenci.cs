@@ -15,22 +15,24 @@ namespace TemizlikNobetiApp
         public FrmYeniOgrenci()
         {
             InitializeComponent();
+            cbSinif.DisplayMember = "Ad";
+            cbSinif.ValueMember = "Id";//SelectedValue kullanabilmek için
+            cbSinif.DataSource = KayitYoneticisi.Siniflar;
         }
+
         private void btnKaydet_Click(object sender, EventArgs e)
         {
             Ogrenci yeni = new();
-            //Benzersiz bir kimlik numarası oluştur
             yeni.Id = Guid.NewGuid().ToString();
+            yeni.Ad = txtAd.Text;
+            yeni.Soyad = txtSoyad.Text;
+            yeni.Numara = Convert.ToInt32(mtxtNumara.Text);
 
-            yeni.Ad = txtOgrenciAd.Text;
-            yeni.Soyad = txtOgrenciSoyad.Text;
-            
+            yeni.SinifId = cbSinif.SelectedValue.ToString();
 
             KayitYoneticisi.Ogrenciler.Add(yeni);
-
             KayitYoneticisi.Kaydet();
-            DialogResult = DialogResult.OK;//Diyalog Formunu Kapatır
-            //Form kapatılırken geriye cevap "OK" döner
+            DialogResult = DialogResult.OK;
         }
     }
 }

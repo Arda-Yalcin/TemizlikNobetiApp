@@ -45,6 +45,7 @@
             // 
             // txtSinifAd
             // 
+            txtSinifAd.Cursor = Cursors.Hand;
             txtSinifAd.Location = new Point(107, 29);
             txtSinifAd.Name = "txtSinifAd";
             txtSinifAd.Size = new Size(133, 23);
