@@ -100,6 +100,7 @@
             btnSinifSil.TabIndex = 6;
             btnSinifSil.Text = "Sınıf Sil";
             btnSinifSil.UseVisualStyleBackColor = false;
+            btnSinifSil.Click += btnSinifSil_Click;
             // 
             // lbOgrenciler
             // 
@@ -183,6 +184,7 @@
             // 
             // lblTarih
             // 
+            lblTarih.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             lblTarih.Location = new Point(380, 9);
             lblTarih.Name = "lblTarih";
             lblTarih.Size = new Size(200, 33);
@@ -193,9 +195,9 @@
             btnSec.BackColor = Color.CornflowerBlue;
             btnSec.Cursor = Cursors.Hand;
             btnSec.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
-            btnSec.Location = new Point(380, 199);
+            btnSec.Location = new Point(380, 188);
             btnSec.Name = "btnSec";
-            btnSec.Size = new Size(77, 33);
+            btnSec.Size = new Size(200, 33);
             btnSec.TabIndex = 7;
             btnSec.Text = "Seç";
             btnSec.UseVisualStyleBackColor = false;
@@ -203,8 +205,9 @@
             // 
             // lblBuHaftaSira
             // 
+            lblBuHaftaSira.BackColor = Color.LightSteelBlue;
             lblBuHaftaSira.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
-            lblBuHaftaSira.Location = new Point(380, 77);
+            lblBuHaftaSira.Location = new Point(380, 66);
             lblBuHaftaSira.Name = "lblBuHaftaSira";
             lblBuHaftaSira.Size = new Size(200, 119);
             lblBuHaftaSira.TabIndex = 6;
@@ -216,7 +219,7 @@
             btnYeniOgrenci.Cursor = Cursors.Hand;
             btnYeniOgrenci.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             btnYeniOgrenci.ForeColor = Color.Black;
-            btnYeniOgrenci.Location = new Point(188, 406);
+            btnYeniOgrenci.Location = new Point(232, 405);
             btnYeniOgrenci.Name = "btnYeniOgrenci";
             btnYeniOgrenci.Size = new Size(142, 38);
             btnYeniOgrenci.TabIndex = 4;

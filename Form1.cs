@@ -133,7 +133,7 @@ namespace TemizlikNobetiApp
             KayitYoneticisi.Kaydet();
             Filtrele();
             BuHaftaTemizlikYapacaklar();
-            MessageBox.Show("Kayýt olu?turuldu");
+            MessageBox.Show("Kayýt oluþturuldu");
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -211,15 +211,49 @@ namespace TemizlikNobetiApp
             if (cevap == DialogResult.Yes)
             {
                 KayitYoneticisi.Ogrenciler.Remove(ogr);
-                if(SeciliOgrenciListesi.Contains(ogr) )
+                if (SeciliOgrenciListesi.Contains(ogr))
                 {
                     SeciliOgrenciListesi.Remove(ogr);
                 }
 
                 Filtrele();
-                BuHaftaTemizlikYapacaklar  ();
+                BuHaftaTemizlikYapacaklar();
+                KayitYoneticisi.Kaydet();
             }
 
+        }
+
+        private void btnSinifSil_Click(object sender, EventArgs e)
+        {
+            Sinif sinif = cbSinif.SelectedItem as Sinif;
+            if (sinif == null)
+                return;
+
+            DialogResult cevap = MessageBox.Show(
+                sinif.Ad + " isimli sinifi silmek istediginize emin misiniz?, Dikkat Sýnýftaki Öðrenciler de silinecek",
+                "Uyari", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (cevap == DialogResult.Yes)
+            {
+                var liste = KayitYoneticisi.
+                Ogrenciler.Where(x => x.SinifId == sinif.Id).ToList();
+
+                foreach (var item in liste)
+                {
+                    KayitYoneticisi.Ogrenciler.Remove(item);
+
+                    if (SeciliOgrenciListesi.Contains(item))
+                    {
+                        SeciliOgrenciListesi.Remove(item);
+                    }
+                }
+                KayitYoneticisi.Siniflar.Remove(sinif);
+
+                Filtrele();
+                BuHaftaTemizlikYapacaklar();
+                KayitYoneticisi.Kaydet();
+
+            }
         }
     }
 }
