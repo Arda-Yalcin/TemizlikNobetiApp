@@ -9,7 +9,7 @@ namespace TemizlikNobetiApp
         {
             InitializeComponent();
 
-            //ilk açýlýþta verileri yükle 
+            //?lk aç?l??ta verileri yükle 
             KayitYoneticisi.Yukle();
 
             cbSinif.DisplayMember = "Ad";
@@ -74,6 +74,7 @@ namespace TemizlikNobetiApp
         private void cbSinif_SelectedValueChanged(object sender, EventArgs e)
         {
             Filtrele();
+            BuHaftaTemizlikYapacaklar();
         }
 
         private void btnAta_Click(object sender, EventArgs e)
@@ -98,14 +99,127 @@ namespace TemizlikNobetiApp
 
         private void btnCikar_Click(object sender, EventArgs e)
         {
-            //Seçili olaný öðrenci gibi al (as=gibi)
-            //Alamazsan null deðer ver
+            //Seçili olan? ö?renci gibi al (as=gibi)
+            //Alamazsan null de?er ver
             Ogrenci ogr = lbSecilenler.SelectedItem as Ogrenci;
 
             if (ogr != null)
             {
                 SeciliOgrenciListesi.Remove(ogr);
             }
+        }
+
+        private void btnOnayla_Click(object sender, EventArgs e)
+        {
+            if (SeciliOgrenciListesi.Count == 0)
+            {
+                MessageBox.Show("Öðrenci seçimi yapýnýz");
+                return;
+            }
+
+            //Temizlik kayd? olu?tur
+            foreach (Ogrenci ogr in SeciliOgrenciListesi)
+            {
+                TemizlikKayit kayit = new();
+                kayit.Id = Guid.NewGuid().ToString();
+                kayit.OgrenciId = ogr.Id;
+                kayit.Tarih = dtpTarih.Value;
+
+                KayitYoneticisi.TemizlikKayitlari.Add(kayit);
+            }
+
+            SeciliOgrenciListesi.Clear();
+
+            KayitYoneticisi.Kaydet();
+            Filtrele();
+            BuHaftaTemizlikYapacaklar();
+            MessageBox.Show("Kayýt olu?turuldu");
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+        void BuHaftaTemizlikYapacaklar()
+        {
+            if (cbSinif.SelectedValue == null)
+            {
+                //S?n?f seçili de?ilse
+                lbOgrenciler.DataSource = null;
+                return;
+            }
+
+            //S?n?f seçili
+            string sinifId = cbSinif.SelectedValue.ToString();
+
+            var liste = KayitYoneticisi.Ogrenciler
+                .Where(x => x.SinifId == sinifId)
+                .OrderBy(x => x.TemizlikPuani)
+                .Take(2);
+            lblBuHaftaSira.Text = "Bu haftaki Sýra:\n";
+
+            if (liste.Count() == 0)
+            {
+                lblBuHaftaSira.Text += "Temizlik Yapacak Kiþi Yok";
+            }
+
+            foreach (Ogrenci ogr in liste)
+            {
+                lblBuHaftaSira.Text += $"{ogr.AdSoyad}\n";
+            }
+        }
+        private void btnSec_Click(object sender, EventArgs e)
+        {
+            if (cbSinif.SelectedValue == null)
+            {
+                //Sýnýf seçili deðilse
+                lbOgrenciler.DataSource = null;
+                return;
+            }
+
+            //Sýnýf seçili
+            string sinifId = cbSinif.SelectedValue.ToString();
+
+            var liste = KayitYoneticisi.Ogrenciler
+                .Where(x => x.SinifId == sinifId)
+                .OrderBy(x => x.TemizlikPuani)
+                .Take(2);
+
+            foreach (Ogrenci ogr in liste)
+            {
+                if (!SeciliOgrenciListesi.Contains(ogr))
+                    SeciliOgrenciListesi.Add(ogr);
+            }
+        }
+
+        private void timer1_Tick_1(object sender, EventArgs e)
+        {
+            DateTime dt = DateTime.Now;
+            lblTarih.Text = $"Bugün {dt:dd} {dt:MMMM} {dt:yyyy} Saat: {dt:HH}:{dt:mm}";
+        }
+
+        private void btnOgrenciSil_Click(object sender, EventArgs e)
+        {
+            Ogrenci ogr = lbOgrenciler.SelectedItem as Ogrenci;
+            if (ogr == null)
+                return;
+
+            DialogResult cevap = MessageBox.Show(
+                ogr.AdSoyad + " isimli ö?renciyi silmek istediginize emin misiniz?",
+                "Uyari", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (cevap == DialogResult.Yes)
+            {
+                KayitYoneticisi.Ogrenciler.Remove(ogr);
+                if(SeciliOgrenciListesi.Contains(ogr) )
+                {
+                    SeciliOgrenciListesi.Remove(ogr);
+                }
+
+                Filtrele();
+                BuHaftaTemizlikYapacaklar  ();
+            }
+
         }
     }
 }
